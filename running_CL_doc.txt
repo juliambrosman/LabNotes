@@ -1,0 +1,12 @@
+#sub sampling files to test with Interproscan
+mothur
+sub.sample(fasta=GLWC_3-7_na_orfs200.fasta, size=10)
+# renamed output file: GLWC_3-7_na_orfs200.subsample10.fasta
+sub.sample(fasta=GLWC_3-7_na_orfs200.fasta, size=100)
+# renamed output file: GLWC_3-7_na_orfs200.subsample100.fasta
+sub.sample(fasta=GLWC_3-7_na_orfs200.fasta, size=1000)
+# renamed output file: GLWC_3-7_na_orfs200.subsample1000.fasta
+#now quitting mothur:
+quit()
+
+ssh jmb636@cbsulogin.tc.cornell.edu

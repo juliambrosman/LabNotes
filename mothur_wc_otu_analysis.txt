@@ -1,0 +1,64 @@
+7-2-2014
+
+###First Generate Rarefaction Curve of GL sequences and RL sequences:
+$cd /Users/juliambrown/Documents/6thYear/g20_Analyses/OTU_Analysis
+$ls		#original files in folder:
+		CuratedGLSeqs_wc_Only_wOG.fas		# original alignment in fasta format	
+		bigcat.txt							# group file with four groups: G: GL, R: RL, I:Illumina Contigs, OUTGROUP: t4 bacteriophage sequence as outgroup 
+		CuratedGLSeqs_wc_Only_wOG.phylip.an.list	# list file made from "cluster" command in mothur
+		wc_groups.txt						#more specific groupings that pertain to the month and year of each sequence
+		CuratedGLSeqs_wc_Only_wOG.phylip.dist	# distance matrix created by mothur's "dist.seqs" command
+# First generate rarefaction curves for the two groups:
+>make.shared(list=CuratedGLSeqs_wc_Only_wOG.phylip.an.list, group=bigcat.txt)
+	Output File Names: 
+	CuratedGLSeqs_wc_Only_wOG.phylip.an.shared
+	CuratedGLSeqs_wc_Only_wOG.phylip.an.G.rabund
+	CuratedGLSeqs_wc_Only_wOG.phylip.an.I.rabund
+	CuratedGLSeqs_wc_Only_wOG.phylip.an.OUTGROUP.rabund
+	CuratedGLSeqs_wc_Only_wOG.phylip.an.R.rabund
+> rarefaction.single(shared=CuratedGLSeqs_wc_Only_wOG.phylip.an.shared, label=unique-0.02, freq=1)
+	Output File Names: 
+	CuratedGLSeqs_wc_Only_wOG.phylip.an.groups.rarefaction
+	
+## In R (saved as: "g20 OTU Analysis.R"
+##Rarefaction.single results from mothur:----
+rdata1<-read.table("CuratedGLSeqs_wc_Only_wOG.phylip.an.groups.rarefaction", sep="\t", header=TRUE)
+library("Hmisc", lib.loc="/Library/Frameworks/R.framework/Versions/3.0/Resources/library")
+
+#plot with error bars
+with(rdata1, errbar(numsampled,X0.02.R, yminus=lci.R.1, yplus=hci.R.1, col="violet", pch=19))
+
+#plot together:
+#as smoothed lines:
+glo<-loess(rdata1$X0.02.G~rdata1$numsampled)
+rlo<-loess(rdata1$X0.02.R~rdata1$numsampled)
+with(rdata1, plot(numsampled,X0.02.G, type="n",ylab="Number Sampled", xlab="OTUs", main="Rarefaction Analysis at 98% ID"))
+lines(predict(glo),col="forestgreen",lwd=3)
+lines(predict(rlo),col="purple",lwd=3)
+legend("topleft",c("GL","RL"),lwd=3, col=c("forestgreen","purple"))
+
+#as data points:
+with(rdata1, plot(numsampled,X0.02.G, type="n",ylab="Number Sampled", xlab="OTUs", main="Rarefaction Analysis at 98% ID"))
+with(rdata1, points(numsampled,X0.02.R,col="purple", pch=19))
+with(rdata1, points(numsampled,X0.02.G,col="forestgreen", pch=19))
+legend("topleft",c("GL","RL"),pch=19, col=c("forestgreen","purple"))
+
+#saved smooth lines plot as: "gl_rl_wc_rarefaction.jpeg" or something similar
+
+###Next, want to calculate alpha diversity in the two lakes:
+>summary.single(shared=CuratedGLSeqs_wc_Only_wOG.phylip.an.shared)
+
+#Cool, got it.  Worked with R to pull out the RL and GL statistics at 98% ID but at a 
+#roadblock to make a simple dendrogram with error bars.  Too tired to troubleshoot.
+
+#R code: 
+##Diversity Calculators:
+alpha1<-read.table(file="CuratedGLSeqs_wc_Only_wOG.phylip.an.groups.summary",sep="\t",header=TRUE)
+library("dplyr", lib.loc="/Library/Frameworks/R.framework/Versions/3.0/Resources/library")
+# to get just RL and GL apha diversity estimator values at 98% OTU cutoff:
+summary98<-filter(alpha1,label==0.02, group==c("G","R"))
+with(summary98, barplot(chao, names=c("RL","GL"), main="chao index"))
+barplot(summary98$chao)
+
+
+

@@ -1,0 +1,63 @@
+velveth /velvet_trial 11 -shortPaired -fastq JMB-1X20_S1_L001_R1_001.fastq.gz JMB-1X20_S1_L001_R2_001.fastq.gz
+velvetg /Volumes/Microbe_Vtrak/Users/brown/GLIllumina/1X20/velvet_trial/velvet_trial -ins_length 400 -read_trkg yes -exp_cov auto 
+
+# assembling data using velvet for serious:
+# first make a directory for Velvet output: 
+$ mkdir VelvetAssemblies
+$ cd VelvetAssemblies
+$ pwd
+/Volumes/Microbe_Vtrak/Users/brown/GLIllumina/VelvetAssemblies
+
+# move into folder with paired libraries:
+$ cd 3X4/
+$ ls
+JMB3X4_S11_L001_R1_001.fastq JMB3X4_S11_L001_R2_001.fastq
+
+#run velvet: 
+velveth /Volumes/Microbe_Vtrak/Users/brown/GLIllumina/VelvetAssemblies 57 -shortPaired -fastq JMB3X4_S11_L001_R1_001.fastq JMB3X4_S11_L001_R2_001.fastq
+velvetg /Volumes/Microbe_Vtrak/Users/brown/GLIllumina/VelvetAssemblies -ins_length 150 -read_trkg yes -exp_cov auto 
+#Errors.  It looks like the server doesn't have enough memory to run a Velvet Assembly, which is surprising.  
+# BioHPC also has MetaVelvet, so I may make a plan to try and use this instead.
+
+# 2014-06-30
+ssh jmb636@cbsumm02.tc.cornell.edu
+mkdir velvet_assemblies
+cp /home/jmb636/JMB_GL_Informatics/SequencingFiles/*2X13*fastq ./sequencefiles
+
+On Medium Size Server, running metavelvet on 2X13:
+Began at ~12:15
+velveth /workdir/velvet_assemblies 57 -shortPaired -fastq JMB-2X13_S2_L001_R2_001.fastq JMB-2X13_S2_L001_R1_001.fastq
+velvetg /workdir/velvet_assemblies -exp_cov auto -ins_length 350 
+/programs/MetaVelvet-1.2.02/meta-velvetg /workdir/velvet_assemblies -ins_length 350 | tee logfile
+Ended at: 1:37
+
+Transferred to my cbsu home folder.
+
+
+ssh jmb636@cbsulogin.tc.cornell.edu
+
+ssh jmb636@csbulm04.tc.cornell.edu
+
+cd workdir
+mkdir 2x29_velvet
+
+cp ~/JMB_GL_Informatics/SequencingFiles/JMB2X29_S3_L001_R*_001.fastq /workdir/2x29_velvet
+# started at 4:01
+velveth /workdir/2x29_velvet 57 -shortPaired -fastq JMB2X29_S3_L001_R1_001.fastq JMB2X29_S3_L001_R2_001.fastq
+# ended at 4:02, started below line at 4:03
+velvetg /workdir/2x29_velvet -exp_cov auto -ins_length 350
+# ended above line at: 5:43 , started below line at:  
+
+mv 2x29_velvet ~/JMB_GL_Informatics/SequencingFiles/
+logout
+
+#2014-07-01
+ssh jmb636@cbsulm04.tc.cornell.edu
+
+mv 2x29_velvet /workdir/
+# begin: 10:04
+/programs/MetaVelvet-1.2.02/meta-velvetg /workdir/2x29_velvet -ins_length 350 | tee logfile
+# ended: 11:09
+
+mv 2x29_velvet ~/JMB_GL_Informatics/SequencingFiles/
+

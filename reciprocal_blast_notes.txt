@@ -1,0 +1,30 @@
+1x20mPR_vs_WCmPR.out 
+2x29mPR_vs_WCmPR.out 
+2x35mPR_vs_WCmPR.out 
+2X13mPR_vs_WCmPR.out 
+2x32mPR_vs_WCmPR.out 
+3x4mPR_vs_WCmPR.out
+
+JMB2X29_mothurPR.fasta
+JMB-2X13_mothurPC.fasta
+JMB2X32_mothurPR.fasta
+JMB-1X20_mothurpairedreads.fasta
+JMB3X4_mothur_PR.contigs.fasta
+JMB2X35_mothur_PR.contigs.fasta
+JMB3-7vir_mothur_PR.contigs.fasta
+
+2x35_NOmatch_wc.fasta                 
+2x35_match_wc.fasta                   
+3x4_NOmatch_wcseeds.fasta             
+3x4_match_wcseeds.fasta               
+2x13mPR_match_wcseeds.fa   
+2x13mPR_NOmatch_wcseeds.fa 
+2x29mPR_match_wcseeds.fa
+2x29mPR_NOmatch_wcseeds.fa 
+
+
+awk '{print $1}' 2x32mPR_vs_WCmPR.out | uniq > 2x32_matchwc_titles.txt
+grep "M024652000000000A5D3T11108248417021" 2x32_mothurPR.uniq.fasta
+sort JMB2X32_mothurPR.fasta | uniq > 2x32_mothurPR.uniq.fasta
+pyfasta extract --header --fasta 2x32_mothurPR.uniq.fasta --file 2x32_matchwc_titles.txt > 2x32mPR_match_wc.fa
+# not working.  just going to use the five datasets that I was able to extract from.  

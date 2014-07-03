@@ -1,0 +1,173 @@
+2014-07-01
+## Mothur analysis of WC g20 libraries:
+## MUSCLE align sequences in MEGA:
+## MEGA on Mac is version 5.2.2
+#MUSCLE align codons...default parameters
+
+cd /Desktop/g20/WC_Only_Manipulations
+mothur
+dist.seqs(fasta=CuratedGLSeqs_wc_Only_aligned.fas, output=lt)
+#output: Output File Names: 
+#			CuratedGLSeqs_wc_Only_aligned.phylip.dist
+
+cluster(phylip=CuratedGLSeqs_wc_Only_aligned.phylip.dist)
+#output: Output File Names: 
+#				CuratedGLSeqs_wc_Only_aligned.phylip.an.sabund
+#				CuratedGLSeqs_wc_Only_aligned.phylip.an.rabund
+#				CuratedGLSeqs_wc_Only_aligned.phylip.an.list
+
+tree.shared(phylip=CuratedGLSeqs_wc_Only_aligned.phylip.dist)
+#output: Output File Names: 
+#			CuratedGLSeqs_wc_Only_aligned.phylip.tre
+#Tree is really big, want to pick out representative sequences for each OTU
+get.oturep(phylip=CuratedGLSeqs_wc_Only_aligned.phylip.dist, list=CuratedGLSeqs_wc_Only_aligned.phylip.an.list, fasta=CuratedGLSeqs_wc_Only_aligned.fas)
+
+#now make dist matrix out of the "unique" fasta file that came out of "getotu.rep"
+#in regular terminal give "unique" fasta file smaller name:
+cp CuratedGLSeqs_wc_Only_aligned.phylip.an.unique.rep.fasta GLWC_unique.fasta
+#in mothur:
+dist.seqs(fasta=GLWC_unique.fasta, output=lt)
+tree.shared(phylip=GLWC_unique.phylip.dist)
+
+#Look at tree using iTol, added a data file to put bar graphs on to show representation
+#One more cluster tree, this time with sequences at 98% identity, or the "0.02" group files
+#rename file:
+cp CuratedGLSeqs_wc_Only_aligned.phylip.an.0.02.rep.fasta GLWC_g20_0.02.fasta
+#in mothur: 
+dist.seqs(fasta=GLWC_g20_0.02.fasta, output=lt)
+tree.shared(phylip=GLWC_g20_0.02.phylip.dist)
+
+## Trying to set up a Unifrac Analysis:
+split.groups(group=wc_groups.txt, fasta=CuratedGLSeqs_wc_Only_wOG.fas)
+
+# Output File Names: 
+# CuratedGLSeqs_wc_Only_wOG.G-A3.fasta
+# CuratedGLSeqs_wc_Only_wOG.G-J3.fasta
+# CuratedGLSeqs_wc_Only_wOG.G-M2.fasta
+# CuratedGLSeqs_wc_Only_wOG.G-S3.fasta
+# CuratedGLSeqs_wc_Only_wOG.I-Ia.fasta
+# CuratedGLSeqs_wc_Only_wOG.OG.fasta
+# CuratedGLSeqs_wc_Only_wOG.R-J2.fasta
+# CuratedGLSeqs_wc_Only_wOG.R-M2.fasta
+# CuratedGLSeqs_wc_Only_wOG.R-S2.fasta
+
+dist.seqs(fasta=CuratedGLSeqs_wc_Only_wOG.G-A3.fasta, output=lt)
+dist.seqs(fasta=CuratedGLSeqs_wc_Only_wOG.G-J3.fasta, output=lt)
+dist.seqs(fasta=CuratedGLSeqs_wc_Only_wOG.G-M2.fasta, output=lt)
+dist.seqs(fasta=CuratedGLSeqs_wc_Only_wOG.G-S3.fasta, output=lt)
+dist.seqs(fasta=CuratedGLSeqs_wc_Only_wOG.I-Ia.fasta, output=lt)
+dist.seqs(fasta=CuratedGLSeqs_wc_Only_wOG.R-J2.fasta, output=lt)
+dist.seqs(fasta=CuratedGLSeqs_wc_Only_wOG.R-M2.fasta, output=lt)
+dist.seqs(fasta=CuratedGLSeqs_wc_Only_wOG.R-S2.fasta, output=lt)
+
+#Output files: 
+#CuratedGLSeqs_wc_Only_wOG.G-A3.phylip.dist
+#CuratedGLSeqs_wc_Only_wOG.G-J3.phylip.dist
+#CuratedGLSeqs_wc_Only_wOG.G-M2.phylip.dist
+#CuratedGLSeqs_wc_Only_wOG.G-S3.phylip.dist
+#CuratedGLSeqs_wc_Only_wOG.I-Ia.phylip.dist
+#CuratedGLSeqs_wc_Only_wOG.R-J2.phylip.dist
+#CuratedGLSeqs_wc_Only_wOG.R-M2.phylip.dist
+
+dist.seqs(fasta=CuratedGLSeqs_wc_Only_wOG.fas, output=lt)
+cluster(phylip=CuratedGLSeqs_wc_Only_wOG.phylip.dist)
+parse.list(list=CuratedGLSeqs_wc_Only_wOG.phylip.an.list, group=wc_groups.txt)
+
+#Output File Names: 
+#CuratedGLSeqs_wc_Only_wOG.phylip.an.G-A3.list
+#CuratedGLSeqs_wc_Only_wOG.phylip.an.G-J3.list
+#CuratedGLSeqs_wc_Only_wOG.phylip.an.G-M2.list
+#CuratedGLSeqs_wc_Only_wOG.phylip.an.G-S3.list
+#CuratedGLSeqs_wc_Only_wOG.phylip.an.I-Ia.list
+#CuratedGLSeqs_wc_Only_wOG.phylip.an.OG.list
+#CuratedGLSeqs_wc_Only_wOG.phylip.an.R-J2.list
+#CuratedGLSeqs_wc_Only_wOG.phylip.an.R-M2.list
+#CuratedGLSeqs_wc_Only_wOG.phylip.an.R-S2.list
+
+get.oturep(phylip=CuratedGLSeqs_wc_Only_wOG.G-A3.phylip.dist, list=CuratedGLSeqs_wc_Only_wOG.phylip.an.G-A3.list, fasta=CuratedGLSeqs_wc_Only_wOG.G-A3.fasta, label=unique)
+get.oturep(phylip=CuratedGLSeqs_wc_Only_wOG.G-J3.phylip.dist, list=CuratedGLSeqs_wc_Only_wOG.phylip.an.G-J3.list, fasta=CuratedGLSeqs_wc_Only_wOG.G-J3.fasta, label=unique)
+get.oturep(phylip=CuratedGLSeqs_wc_Only_wOG.G-M2.phylip.dist, list=CuratedGLSeqs_wc_Only_wOG.phylip.an.G-M2.list, fasta=CuratedGLSeqs_wc_Only_wOG.G-M2.fasta, label=unique)
+get.oturep(phylip=CuratedGLSeqs_wc_Only_wOG.G-S3.phylip.dist, list=CuratedGLSeqs_wc_Only_wOG.phylip.an.G-S3.list, fasta=CuratedGLSeqs_wc_Only_wOG.G-S3.fasta, label=unique)
+get.oturep(phylip=CuratedGLSeqs_wc_Only_wOG.I-Ia.phylip.dist, list=CuratedGLSeqs_wc_Only_wOG.phylip.an.I-Ia.list, fasta=CuratedGLSeqs_wc_Only_wOG.I-Ia.fasta, label=unique)
+get.oturep(phylip=CuratedGLSeqs_wc_Only_wOG.R-J2.phylip.dist, list=CuratedGLSeqs_wc_Only_wOG.phylip.an.R-J2.list, fasta=CuratedGLSeqs_wc_Only_wOG.R-J2.fasta, label=unique)
+get.oturep(phylip=CuratedGLSeqs_wc_Only_wOG.R-M2.phylip.dist, list=CuratedGLSeqs_wc_Only_wOG.phylip.an.R-M2.list, fasta=CuratedGLSeqs_wc_Only_wOG.R-M2.fasta, label=unique)
+get.oturep(phylip=CuratedGLSeqs_wc_Only_wOG.R-S2.phylip.dist, list=CuratedGLSeqs_wc_Only_wOG.phylip.an.R-S2.list, fasta=CuratedGLSeqs_wc_Only_wOG.R-S2.fasta, label=unique)
+
+# in bash
+cat CuratedGLSeqs_wc_Only_wOG.phylip.an.*.unique.rep.fasta CuratedGLSeqs_wc_Only_wOG.OG.fasta > unique_wc_seqs.fasta
+# Then made a tree... I'm losing track of what I was trying to do... maybe I should put this down for the night...
+
+# 2014-07-02
+# Simplifying today: conduct Unifrac Analysis based on difference between GL and RL sequences.
+cd ~/Desktop/g20/WC_Only_Manipulations/gl-rl_wc_seq_comparison/
+$ls 
+# CuratedGLSeqs_wc_Only_wOG.fas	wc_groups.txt
+#make distance matrix based on MUSCLE alignment (alignment already done for the CuratedGL* file)
+dist.seqs(fasta=CuratedGLSeqs_wc_Only_wOG.fas, output=lt)
+cluster(phylip=CuratedGLSeqs_wc_Only_wOG.phylip.dist)	#cluster sequences based on distance matrix
+split.groups(group=wc_groups.txt, fasta=CuratedGLSeqs_wc_Only_wOG.fas)
+parse.list(list=CuratedGLSeqs_wc_Only_wOG.phylip.an.list, group=wc_groups.txt)
+
+get.oturep(phylip=CuratedGLSeqs_wc_Only_wOG.phylip.dist, list=CuratedGLSeqs_wc_Only_wOG.phylip.an.G.list, fasta=CuratedGLSeqs_wc_Only_wOG.fas, label=unique)
+get.oturep(phylip=CuratedGLSeqs_wc_Only_wOG.phylip.dist, list=CuratedGLSeqs_wc_Only_wOG.phylip.an.R.list, fasta=CuratedGLSeqs_wc_Only_wOG.fas, label=unique)
+get.oturep(phylip=CuratedGLSeqs_wc_Only_wOG.phylip.dist, list=CuratedGLSeqs_wc_Only_wOG.phylip.an.I.list, fasta=CuratedGLSeqs_wc_Only_wOG.fas, label=unique)
+get.oturep(phylip=CuratedGLSeqs_wc_Only_wOG.phylip.dist, list=CuratedGLSeqs_wc_Only_wOG.phylip.an.O.list, fasta=CuratedGLSeqs_wc_Only_wOG.fas, label=unique)
+
+# in bash:
+cat *rep.fasta > lake_unique_g20.fasta
+#edited titles to match environment file in BioEdit/Excel
+#Re-aligned unique sequences, removed gaps and constructed a UPGMA tree and saved it as .nwk
+files: 	g20_unique_by_lake.fas
+		unique_by_lake_upgma.nwk
+		ubl_envt.txt
+
+# I think I'm read for unifrac now:
+# mothur > unifrac.unweighted(tree=abrecovery.paup.nj, group=abrecovery.groups)
+
+unifrac.unweighted(tree=unique_by_lake_upgma.nwk, group=envt_newnames.txt)
+#nothing is working!  Going to return to my original sequence and group file with replicate sequences
+
+#and magically it works.  It was not liking the additional column of numbers, working better when all sequences are used.
+
+unifrac.unweighted(tree=all_wc_seqs.nwk, group=wc_groups.txt, random=t)
+
+unifrac.unweighted(tree=all_wc_seqs.nwk, group=bigcat.txt, random=t, groups=all)
+output: all_wc_seqs.uwsummary
+		all_wc_seqs.nwk1.unweighted
+unifrac.weighted(tree=all_wc_seqs.nwk, group=wc_groups.txt)
+
+RESULTS:
+Results from unifrac.unweighted:
+unifrac.unweighted(tree=all_wc_seqs.nwk, group=bigcat.txt, random=t, groups=all)
+Tree#	Groups	UWScore		UWSig
+1		G-I		0.707124	0.3560
+1		G-R		0.570881	0.0030
+1		I-R		0.694422	0.4490
+
+No significant differences between the libraries.  
+
+Then this: 
+unifrac.unweighted(tree=all_wc_seqs.nwk, group=bigcat.txt, random=t)
+Tree#	Groups			UWScore		UWSig
+1		G-I-OUTGROUP-R	0.527507	0.07401
+
+Now NJ tree without an outgroup:
+unifrac.unweighted(tree=all_wc_nj.nwk, group=bigcat.txt, random=t)
+Tree#	Groups	UWScore	UWSig
+1	G-I-R	0.484246	0.09701
+
+unifrac.unweighted(tree=all_wc_nj.nwk, group=bigcat.txt, random=t, groups=all)
+ree#	Groups	UWScore	UWSig
+1	G-I	0.701095	0.47
+1	G-R	0.580976	<0.001
+1	I-R	0.729688	0.472
+
+parsimony test:
+parsimony(tree=all_wc_nj.nwk, group=bigcat.txt)
+Result:
+Tree#	Groups	ParsScore	ParsSig
+1		G-I-R		41		<0.001
+
+parsimony(tree=all_wc_nj.nwk, group=bigcat.txt, groups=G-R)
+Tree#	Groups	ParsScore	ParsSig
+1		G-R		32			<0.001
