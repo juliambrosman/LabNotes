@@ -1,0 +1,66 @@
+###Reciprocal BLAST analysis notes:
+
+pwd
+/Users/juliambrown/Desktop/MetaviromicData/recipblasts/wc_split_fasta_files
+
+I have run BLASTs of the sediment libraries against the de-replicated WC library and created two libraries:
+the sequences with BLAST matches to WC, and those without that I intend to submit to metavir
+I ran into a snag with one library because metavir found it to have low complexity reads, so I am now
+running the sequences through a QC software (prinseq) which is a web-based sequence analysis tool
+
+On "upload a new dataset page" choosing options:
+Basic:
+	Length distribution
+	GC content
+	Occurrence of N
+Fast processing:
+	Sequence duplication (exact only)
+	Assembly quality measure
+Slow processing:
+	Sequence complexity
+
+"On Process Input Data" page selections:
+Maximum number of allowed Ns: 0
+Dereplicate data: "Remove exact sequence duplicates"
+Sequence complexity related filters: 
+	Method: DUST
+	Low-complexity threshold: 49
+Output data:
+	FASTA
+	Data passing all filters (good)
+
+	
+input: 3x4_match_wcseeds.fasta
+Data ID: 31343034333937363932
+Associated files:
+3x4_match_wcseeds.fasta_good.fasta
+3x4_match_wcseeds.fasta			3x4_match_wcseeds.fasta_log.txt
+3x4_match_wcseeds.fasta.zip		3x4_match_wcseeds.fasta_params.txt
+*3x4_match_wcseeds.fasta_good.fasta has been submitted to MetaVir
+
+input: 3x4_NOmatch_wcseeds.fasta
+Data ID: 31343034343030303039
+Deviations: changed Max number of allowed Ns to 1%
+Associated files:
+3x4_NOmatch_wcseeds.fasta_good.fasta
+3x4_NOmatch_wcseeds.fasta			3x4_NOmatch_wcseeds.fasta_log.txt
+3x4_NOmatch_wcseeds.fasta.zip		3x4_NOmatch_wcseeds.fasta_params.txt
+*3x4_NOmatch_wcseeds.fasta_good.fasta has been submitted to MetaVir
+
+input: 2x13mPR_match_wcseeds.fa.zip
+Data ID: 31343034343034383637
+Deviations: adjust the DUST score to 30, N's allowed to 1%
+MetaVir upload worked only when using the unzipped file.  Good to know for the next time...
+
+input: 2x13mPR_NOmatch_wcseeds.fa.zip
+Data ID: 31343034343133303135
+Deviations: adjust DUST score to 30, N's allowed to 1%
+Uploaded to metavir
+
+input: 2x29mPR_match_wcseeds.fa.zip
+Data ID: 31343034343135383131
+Deviations: adjust DUST score to 30, N's allowed to 1%
+Uploaded to metavir
+
+
+

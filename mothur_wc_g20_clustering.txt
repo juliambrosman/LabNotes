@@ -171,3 +171,111 @@ Tree#	Groups	ParsScore	ParsSig
 parsimony(tree=all_wc_nj.nwk, group=bigcat.txt, groups=G-R)
 Tree#	Groups	ParsScore	ParsSig
 1		G-R		32			<0.001
+
+### 2014-07-03 Analysis with NJ tree built using MEGA
+#trying to run a more respectable, stringent alignment in PhyML to use for unifrac analysis
+Need to change the names of the sequence titles to get a proper phylip formatted file
+PhyML is having problems with the lengthy names I've given it.
+
+cd PhyML_alignment
+Running a ML tree using MEGA.  Begin: 5:03 End: 6:09
+Saved as .nwk: gl_rl_wconly_og_ng.nwk 
+
+>unifrac.unweighted(tree=gl_rl_wconly_og_ng.nwk, group=bigcat.txt, random=t, groups=G-R)
+output:
+Tree#   Groups  UWScore 	UWSig
+1       G-R     0.553636   	<0.0010 
+
+output file re-named to: unifrac.uw.1.txt
+
+#according to the unifrac demo, a score of ~0.5 means there's as much branch length that 
+#shared as there is that is unique to each group.  This is interesting, and suggests that 
+# the groups are significantly different from each other.
+
+#general unifrac:
+> unifrac.unweighted(tree=gl_rl_wconly_og_ng.nwk, group=bigcat.txt, random=t)
+Tree#	Groups	UWScore	UWSig
+1	G-I-OUTGROUP-R	0.461018	0.08101
+It took 1 secs to run unifrac.unweighted.
+All together, no significance
+
+> unifrac.unweighted(tree=gl_rl_wconly_og_ng.nwk, group=bigcat.txt, random=t,groups=I-G-R)
+Tree#	Groups	UWScore	UWSig
+1	G-I	0.677735	0.42
+1	G-R	0.553636	<0.001
+1	I-R	0.714241	0.225
+It took 4 secs to run unifrac.unweighted.
+
+output file renamed: unifrac.uw.2.txt
+
+# now let's try a weighted analysis:
+> unifrac.weighted(tree=gl_rl_wconly_og_ng.nwk, group=bigcat.txt, random=t,groups=I-G-R)
+
+output file for this analysis renamed: unifrac.w.1.txt
+
+### Next use this tree to look at the different sampling points:
+>unifrac.unweighted(tree=gl_rl_wconly_og_ng.nwk, group=wc_groups.txt, random=t)
+Tree#	Groups									UWScore		UWSig
+1	G-A3-G-J3-G-M2-G-S3-I-Ia-OG-R-J2-R-M2-R-S2	0.432594	0.005005
+
+output file renamed: unifrac.uw.3.txt
+
+#now split up the samples to look at significance between pairwise comparisons:
+>unifrac.unweighted(tree=gl_rl_wconly_og_ng.nwk, group=wc_groups.txt, random=t, groups=all)
+Tree#	Groups	UWScore	UWSig
+1	G-A3-G-J3	0.905754	0.29
+1	G-A3-G-M2	0.747581	0.133
+1	G-J3-G-M2	0.798009	0.003002
+1	G-A3-G-S3	0.611493	0.582
+1	G-J3-G-S3	0.894253	0.062
+1	G-M2-G-S3	0.656261	0.01501
+1	G-A3-I-Ia	0.791048	0.747
+1	G-J3-I-Ia	0.794054	0.454
+1	G-M2-I-Ia	0.684122	0.308
+1	G-S3-I-Ia	0.728931	0.451
+1	G-A3-R-J2	0.905252	0.416
+1	G-J3-R-J2	0.752922	0.049
+1	G-M2-R-J2	0.819974	0.005001
+1	G-S3-R-J2	0.769465	0.123
+1	I-Ia-R-J2	0.89715		0.342
+1	G-A3-R-M2	0.680685	0.125
+1	G-J3-R-M2	0.881256	0.001007
+1	G-M2-R-M2	0.494992	0.05101
+1	G-S3-R-M2	0.706853	0.003008
+1	I-Ia-R-M2	0.712045	0.361
+1	R-J2-R-M2	0.858321	<0.001
+1	G-A3-R-S2	0.806013	0.59
+1	G-J3-R-S2	0.835669	0.212
+1	G-M2-R-S2	0.635257	0.135
+1	G-S3-R-S2	0.525266	0.384
+1	I-Ia-R-S2	0.785057	0.565
+1	R-J2-R-S2	0.544562	0.095
+1	R-M2-R-S2	0.704042	0.02101
+
+summary output file re-named: 
+unifrac.uw.4.txt
+
+# made new group files:
+year_groups.txt
+lakeyear_groups.txt
+
+#unweighted unifrac by year:
+>unifrac.unweighted(tree=gl_rl_wconly_og_ng.nwk, group=year_groups.txt, random=t, groups=2-3)
+Tree#	Groups	UWScore	UWSig
+1	2-3	0.608128	<0.001
+
+#sigh... significant.
+renamed summary output file: unifrac.uw.5.txt
+
+#now by year and lake: 
+>unifrac.unweighted(tree=gl_rl_wconly_og_ng.nwk, group=lakeyear_groups.txt, random=t, groups=G2-G3-R2-R3)
+Tree#	Groups	UWScore	UWSig
+1	G2-G3	0.605231	0.001009
+1	G2-R2	0.49222	0.07801
+1	G3-R2	0.598831	<0.001
+
+renamed summary output file: unifrac.uw.6.txt
+
+
+
+
